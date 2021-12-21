@@ -63,8 +63,8 @@ public class SuggestionsResources {
     }
 
     private String makeObjectRequest(String type, String urlparam) throws IOException {
-        String dburl = restProperties.getCustomersURL();
-        log.info("STARTING FIRST " + type + "REQUEST " + dburl);
+        String dburl = "http://localhost:8080/v1/customers";
+        log.info("STARTING FIRST " + type + "REQUEST " + dburl + " " + urlparam);
         URL url = new URL(dburl + urlparam);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -72,12 +72,13 @@ public class SuggestionsResources {
         InputStream responseStream = con.getInputStream();
         ObjectMapper mapper = new ObjectMapper();
         Customers customer = mapper.readValue(responseStream, Customers.class);
-        return customer.getPostcode()+", "+ customer.getTown();
+        log.info(customer.getPostcode()+", "+ customer.getTown());
+        return customer.getPostcode()+","+ customer.getTown();
     }
 
-    private String makeLocationRequest(String type, String urlparam) throws IOException {
+    private String [] makeLocationRequest(String type, String urlparam) throws IOException {
         String dburl = "https://atlas.microsoft.com/search/address/json?&subscription-key=aE9xmxoCJYiA4iR68peVW3FYLVFfenEVz_2VxrO4JUE&api-version=1.0&language=en-US&query="+urlparam;
-        log.info("STARTING" + type + "REQUEST " + dburl);
+        log.info("STARTING SECOND" + type + "REQUEST " + dburl);
         URL url = new URL(dburl + urlparam);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -85,31 +86,60 @@ public class SuggestionsResources {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
-        String [] content = new String[0];
+        String [] content = new String[2];
         int count = 0;
         int pos = 0;
         while ((inputLine = in.readLine()) != null) {
-            if(inputLine.contains("position")) {
-                count = 2;
-            }
+            count = inputLine.indexOf("position");
+            log.info(String.valueOf(count));
+            log.info(String.valueOf(inputLine.length()));
+            inputLine = inputLine.substring(count, count+40);
+            log.info(inputLine);
+            log.info(String.valueOf(inputLine.length()));
             if(count > 0){
-                if(inputLine.contains("lat:")){
-                    inputLine = inputLine.replace("lat:","");
-                    inputLine = inputLine.replace(",","");
-                    inputLine = inputLine.replaceAll(" ","");
+                if(inputLine.contains("lat")){
+                    count = inputLine.indexOf("lat");
+                    log.info(String.valueOf(count));
+                    content[0] = inputLine.substring(count+5, count+13);
                 }
-                if(inputLine.contains("lon:")){
-                    inputLine = inputLine.replace("lon:","");
-                    inputLine = inputLine.replaceAll(" ","");
+                if(inputLine.contains("lon")){
+                    count = inputLine.indexOf("lon");
+                    log.info(String.valueOf(count));
+                    content[1] = inputLine.substring(count+5, count+13);
                 }
-                content[pos] = (inputLine);
-                pos++;
             }
 
         }
         in.close();
         log.info(content[0] +", " + content[1]);
-        return content[0] +", " + content[1];
+        return content;
+    }
+
+    private String makeWeatherRequest(String type, String [] urlparam) throws IOException {
+        String dburl = "https://atlas.microsoft.com/weather/indices/daily/json?api-version=1.0&query="+urlparam[0]+","+urlparam[1]+"&subscription-key=aE9xmxoCJYiA4iR68peVW3FYLVFfenEVz_2VxrO4JUE";
+        log.info("STARTING SECOND" + type + "REQUEST " + dburl);
+        URL url = new URL(dburl);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("accept", "application/json");
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        String [] content = new String[2];
+        int count = 0;
+        String out = "";
+        while ((inputLine = in.readLine()) != null) {
+            count = inputLine.indexOf("Outdoor Activity Forecast");
+            if(inputLine.substring(count,count+125).contains("Fair") || inputLine.substring(count,count+125).contains("Good")){
+                out = "OK for outdoor work";
+            }else{
+                out = "BAD for outdoor work";
+            }
+
+        }
+        log.info(out);
+        in.close();
+        return out;
     }
 
 
@@ -118,11 +148,12 @@ public class SuggestionsResources {
     public Response getCustomerLocationByID(@PathParam("id") Integer id) throws IOException {
 
         String c = makeObjectRequest("GET", String.format("/%d", id));
-        String coordinates = makeLocationRequest("GET", c);
+        String [] coordinates = makeLocationRequest("GET", c);
+        String weather = makeWeatherRequest("GET", coordinates);
         if (c == "") {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.OK).entity(c).build();
+        return Response.status(Response.Status.OK).entity(weather).build();
     }
 
 }
