@@ -1,0 +1,37 @@
+kumuluzee:
+  name: suggestions-service
+  version: 1.0.0
+  env:
+    name: dev
+  server:
+    base-url: http://localhost:8081
+    http:
+      port: 8081
+  config:
+    consul:
+      agent: http://localhost:8500
+  health:
+    metrics:
+      web-instrumentation:
+        - name: suggestions-endpoint
+          url-pattern: /v1/suggestions/*
+rest-properties:
+  maintenance-mode: false
+  broken: false
+  bookingsurl: http://localhost:8080/v1/customers/
+
+
+# docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 postgres:13
+# kumuluzee.env.name če bi bilo znotraj
+# če datoteka: velike črke in podčrtaj namesto pik KUMULUZEE_ENV_NAME
+
+# docker network create rso2021
+# docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 --network rso2021 postgres:13
+# docker -p HOST:CONTAINER
+
+# okoljske spremenljivke: v run ukazu z -e IME=vrednost
+# jdbc:postgresql://worker-database:5432/workers
+# KUMULUZEE_DATASOURCES0_CONNECTIONURL -> sestavljeno iz nivojev te yaml datoteke, 0 tam kjer lahko več
+# docker run -d --name workers-MS -p 8080:8080 -e KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://rso-workerdb:5432/workers --network rso2021 rso2021.v1
+
+# consul agent -dev, na 8500 portu

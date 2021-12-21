@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suggestions-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: suggestions
+  template:
+    metadata:
+      labels:
+        app: suggestions
+    spec:
+      containers:
+        - image: rso2021-suggestions:1.0.0-SNAPSHOT
+          name: suggestions
+          ports:
+            - containerPort: 8081
+              name: server
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: suggestions
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: suggestions
