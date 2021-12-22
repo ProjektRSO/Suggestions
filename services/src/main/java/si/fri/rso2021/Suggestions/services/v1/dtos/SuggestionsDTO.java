@@ -5,6 +5,7 @@ import java.util.Date;
 
 @RequestScoped
 public class SuggestionsDTO implements java.io.Serializable {
+
     private String id;
     private String location;
     private String weather;
