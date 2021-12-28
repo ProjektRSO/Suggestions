@@ -77,6 +77,11 @@
                 <artifactId>kumuluzee-openapi-mp</artifactId>
                 <version>${kumuluzee-openapi-mp.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.discovery</groupId>
+                <artifactId>kumuluzee-discovery-consul</artifactId>
+                <version>${kumuluzee-discovery.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.kumuluz.ee.openapi</groupId>

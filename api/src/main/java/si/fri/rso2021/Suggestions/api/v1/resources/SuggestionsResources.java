@@ -13,6 +13,8 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.rso2021.Suggestions.services.v1.config.RestProperties;
 import si.fri.rso2021.Suggestions.models.v1.objects.Customers;
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import org.eclipse.microprofile.metrics.annotation.Metered;
 
 
 import javax.enterprise.context.ApplicationScoped;
@@ -44,11 +46,16 @@ public class SuggestionsResources {
     @Inject
     private RestProperties restProperties;
 
+    @Inject
+    @DiscoverService(value = "payments", environment = "test", version = "1.0.0")
+    private String suggestionsServiceUrl;
+
     @Context
     protected UriInfo uriInfo;
 
     String url = "";
 
+    @Metered(name = "SuggestionsListRequest")
     private List<Customers> makeListRequest(String type, String urlparam) throws IOException {
         String dburl = restProperties.getCustomersURL();
         log.info("STARTING " + type + " REQUEST " + dburl);
@@ -62,6 +69,7 @@ public class SuggestionsResources {
         return customers;
     }
 
+    @Metered(name = "SuggestionsObjectRequest")
     private String makeObjectRequest(String type, String urlparam) throws IOException {
         String dburl = "http://localhost:8080/v1/customers";
         log.info("STARTING FIRST " + type + "REQUEST " + dburl + " " + urlparam);
@@ -76,6 +84,7 @@ public class SuggestionsResources {
         return customer.getPostcode()+","+ customer.getTown();
     }
 
+    @Metered(name = "SuggestionsLocationRequest")
     private String [] makeLocationRequest(String type, String urlparam) throws IOException {
         String dburl = "https://atlas.microsoft.com/search/address/json?&subscription-key=aE9xmxoCJYiA4iR68peVW3FYLVFfenEVz_2VxrO4JUE&api-version=1.0&language=en-US&query="+urlparam;
         log.info("STARTING SECOND" + type + "REQUEST " + dburl);
@@ -115,6 +124,7 @@ public class SuggestionsResources {
         return content;
     }
 
+    @Metered(name = "SuggestionsWeatherRequest")
     private String makeWeatherRequest(String type, String [] urlparam) throws IOException {
         String dburl = "https://atlas.microsoft.com/weather/indices/daily/json?api-version=1.0&query="+urlparam[0]+","+urlparam[1]+"&subscription-key=aE9xmxoCJYiA4iR68peVW3FYLVFfenEVz_2VxrO4JUE";
         log.info("STARTING SECOND" + type + "REQUEST " + dburl);
