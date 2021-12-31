@@ -5,18 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import com.kumuluz.ee.logs.cdi.Log;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
-import org.eclipse.microprofile.openapi.annotations.media.Content;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import si.fri.rso2021.Suggestions.services.v1.config.RestProperties;
 import si.fri.rso2021.Suggestions.models.v1.objects.Customers;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import org.eclipse.microprofile.metrics.annotation.Metered;
-
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -31,9 +23,15 @@ import javax.ws.rs.core.UriInfo;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Logger;
+import org.eclipse.microprofile.metrics.annotation.Timed;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 
+@Log
 @ApplicationScoped
 @Path("/suggestions")
 @Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +67,10 @@ public class SuggestionsResources {
         return customers;
     }
 
+    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @CircuitBreaker(requestVolumeThreshold = 3)
+    @Fallback(fallbackMethod = "makeObjectRequestFallback")
+    @Timed(name="SuggestionsObjectRequest")
     @Metered(name = "SuggestionsObjectRequest")
     private String makeObjectRequest(String type, String urlparam) throws IOException {
         String dburl = "http://localhost:8080/v1/customers";
@@ -83,6 +85,9 @@ public class SuggestionsResources {
         log.info(customer.getPostcode()+", "+ customer.getTown());
         return customer.getPostcode()+","+ customer.getTown();
     }
+
+    public String makeObjectRequestFallback(String type, String urlparam){return null;};
+
 
     @Metered(name = "SuggestionsLocationRequest")
     private String [] makeLocationRequest(String type, String urlparam) throws IOException {

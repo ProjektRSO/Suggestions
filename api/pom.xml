@@ -25,6 +25,19 @@
         <artifactId>kumuluzee-metrics-core</artifactId>
     </dependency>
     <dependency>
+        <artifactId>kumuluzee-logs-log4j2</artifactId>
+        <groupId>com.kumuluz.ee.logs</groupId>
+    </dependency>
+    <dependency>
+        <groupId>com.kumuluz.ee.logs</groupId>
+        <artifactId>kumuluzee-logs-common</artifactId>
+        <version>1.4.5</version>
+    </dependency>
+    <dependency>
+        <groupId>com.kumuluz.ee.fault.tolerance</groupId>
+        <artifactId>kumuluzee-fault-tolerance-smallrye</artifactId>
+    </dependency>
+    <dependency>
         <groupId>com.kumuluz.ee</groupId>
         <artifactId>kumuluzee-servlet-jetty</artifactId>
     </dependency>
@@ -65,8 +78,6 @@
         <artifactId>kumuluzee-logs-common</artifactId>
         <version>1.4.2</version>
     </dependency>
-
-
     <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>

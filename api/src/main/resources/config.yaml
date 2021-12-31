@@ -24,10 +24,17 @@ kumuluzee:
       servlet:
         enabled: true
         mapping: /metrics
-rest-properties:
-  maintenance-mode: false
-  broken: false
-  bookingsurl: http://localhost:8080/v1/customers
+  rest-properties:
+    maintenance-mode: false
+    broken: false
+    bookingsurl: http://localhost:8080/v1/customers
+  fault-tolerance:
+    annotation-overrides:
+      - class: si.fri.rso2021.Payments.api.v1.resources.SuggestionsResources
+        method: makeObjectRequest
+        annotation: retry
+        parameters:
+          max-retries: 15
 
 
 # docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 postgres:13
