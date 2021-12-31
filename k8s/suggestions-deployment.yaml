@@ -15,6 +15,9 @@ spec:
       containers:
         - image: rso2021-suggestions:1.0.0-SNAPSHOT
           name: suggestions
+          env:
+            - name: REST-PROPERTIES_CUSTOMERSURL
+              value: http://localhost:8080/v1/customers
           ports:
             - containerPort: 8081
               name: server

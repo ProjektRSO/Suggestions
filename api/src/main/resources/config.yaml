@@ -11,12 +11,6 @@ kumuluzee:
     consul:
       agent: http://localhost:8500
   health:
-    checks:
-      data-source-health-check:
-        type: liveness
-        jndi-name: jdbc/suggestions-jpa
-      disk-space-health-check:
-        threshold: 100000000
     metrics:
       web-instrumentation:
         - name: suggestions-endpoint
@@ -24,10 +18,6 @@ kumuluzee:
       servlet:
         enabled: true
         mapping: /metrics
-  rest-properties:
-    maintenance-mode: false
-    broken: false
-    bookingsurl: http://localhost:8080/v1/customers
   fault-tolerance:
     annotation-overrides:
       - class: si.fri.rso2021.Payments.api.v1.resources.SuggestionsResources
@@ -35,6 +25,10 @@ kumuluzee:
         annotation: retry
         parameters:
           max-retries: 15
+rest-properties:
+  maintenance-mode: false
+  broken: false
+  customersurl: http://localhost:8080/v1/customers
 
 
 # docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 postgres:13

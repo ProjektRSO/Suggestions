@@ -13,7 +13,7 @@ public class RestProperties {
     private Boolean maintenanceMode;
 
     @ConfigValue(watch = true)
-    private String customersURL;
+    private String customersurl;
 
     private Boolean broken;
 
@@ -33,7 +33,7 @@ public class RestProperties {
         this.broken = broken;
     }
 
-    public String getCustomersURL() { return customersURL; }
+    public String getCustomersurl() { return customersurl; }
 
-    public void setCustomersURL(String customersURL) { this.customersURL = customersURL;}
+    public void setCustomersurl(String customersurl) { this.customersurl = customersurl;}
 }

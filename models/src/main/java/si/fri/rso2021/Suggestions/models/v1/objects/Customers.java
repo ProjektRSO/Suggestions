@@ -9,6 +9,7 @@ public class Customers {
     private Integer postcode;
     private String town;
     private String birthDate;
+    private String iban;
 
 
     public Integer getId() {
@@ -19,9 +20,7 @@ public class Customers {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getFirstName() {return firstName;}
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -60,6 +59,12 @@ public class Customers {
     }
 
     public void setBirthDate(String birthDate) { this.birthDate = birthDate;}
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) { this.iban = iban;}
 
 
 }

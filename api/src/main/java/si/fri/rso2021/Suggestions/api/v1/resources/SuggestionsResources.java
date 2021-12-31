@@ -2,12 +2,12 @@ package si.fri.rso2021.Suggestions.api.v1.resources;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso2021.Suggestions.services.v1.config.RestProperties;
 import si.fri.rso2021.Suggestions.models.v1.objects.Customers;
-import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -44,18 +44,12 @@ public class SuggestionsResources {
     @Inject
     private RestProperties restProperties;
 
-    @Inject
-    @DiscoverService(value = "payments", environment = "test", version = "1.0.0")
-    private String suggestionsServiceUrl;
-
     @Context
     protected UriInfo uriInfo;
 
-    String url = "";
-
     @Metered(name = "SuggestionsListRequest")
     private List<Customers> makeListRequest(String type, String urlparam) throws IOException {
-        String dburl = restProperties.getCustomersURL();
+        String dburl = restProperties.getCustomersurl();
         log.info("STARTING " + type + " REQUEST " + dburl);
         URL url = new URL(dburl + urlparam);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -73,14 +67,15 @@ public class SuggestionsResources {
     @Timed(name="SuggestionsObjectRequest")
     @Metered(name = "SuggestionsObjectRequest")
     private String makeObjectRequest(String type, String urlparam) throws IOException {
-        String dburl = "http://localhost:8080/v1/customers";
-        log.info("STARTING FIRST " + type + "REQUEST " + dburl + " " + urlparam);
+        String dburl = restProperties.getCustomersurl();
+        log.info("STARTING FIRST " + type + " REQUEST " + dburl + " " + urlparam);
         URL url = new URL(dburl + urlparam);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("accept", "application/json");
         InputStream responseStream = con.getInputStream();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Customers customer = mapper.readValue(responseStream, Customers.class);
         log.info(customer.getPostcode()+", "+ customer.getTown());
         return customer.getPostcode()+","+ customer.getTown();
