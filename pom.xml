@@ -32,6 +32,7 @@
         <kumuluzee-logs.version>1.4.2</kumuluzee-logs.version>
         <kumuluzee-fault-tolerance.version>2.1.1</kumuluzee-fault-tolerance.version>
         <kumuluzee-discovery.version>1.1.1</kumuluzee-discovery.version>
+        <kumuluzee-streaming.version>1.2.2</kumuluzee-streaming.version>
         <postgresql.version>42.3.0</postgresql.version>
     </properties>
 
@@ -107,32 +108,31 @@
                 <artifactId>kumuluzee-graphql</artifactId>
                 <version>${kumuluzee-graphql.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.kumuluz.ee.streaming</groupId>
+                <artifactId>kumuluzee-streaming-kafka</artifactId>
+                <version>${kumuluzee-streaming.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.kumuluz.ee.graphql</groupId>
                 <artifactId>kumuluzee-graphql-ui</artifactId>
                 <version>${kumuluzee-graphql.version}</version>
             </dependency>
-
-
             <dependency>
                 <artifactId>kumuluzee-logs-log4j2</artifactId>
                 <groupId>com.kumuluz.ee.logs</groupId>
                 <version>${kumuluzee-logs.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.kumuluz.ee.fault.tolerance</groupId>
                 <artifactId>kumuluzee-fault-tolerance-smallrye</artifactId>
                 <version>${kumuluzee-fault-tolerance.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.kumuluz.ee.discovery</groupId>
                 <artifactId>kumuluzee-discovery-consul</artifactId>
                 <version>${kumuluzee-discovery.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
