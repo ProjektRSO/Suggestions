@@ -13,11 +13,15 @@ spec:
         app: suggestions
     spec:
       containers:
-        - image: kolan51/rso2021-suggestions:2022-01-02-00-13-28
+        - image: kolan51/rso2021-suggestions:2021-12-31-21-01-57
           name: suggestions
           env:
             - name: REST-PROPERTIES_CUSTOMERSURL
-              value: http://localhost:8080/v1/customers
+              value: http://20.120.64.197/customers/v1/customers
+            - name: KUMULUZEE_CONFIG_CONSUL_AGENT
+              value: http://52.150.43.117:8500/
+            - name: KUMULUZEE_DISCOVERY_CONSUL_AGENT
+              value: http://52.150.43.117:8500/
           ports:
             - containerPort: 8081
               name: server
@@ -41,7 +45,7 @@ kind: Service
 metadata:
   name: suggestions
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8081
       protocol: TCP
