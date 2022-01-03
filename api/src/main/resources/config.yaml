@@ -11,13 +11,23 @@ kumuluzee:
     consul:
       agent: http://localhost:8500
   health:
-    metrics:
-      web-instrumentation:
-        - name: suggestions-endpoint
-          url-pattern: /v1/suggestions/*
-      servlet:
-        enabled: true
-        mapping: /metrics
+    checks:
+      disk-space-health-check:
+        threshold: 100000000
+      http-health-check:
+        connection-url: https://atlas.microsoft.com/weather/forecast/daily/json?api-version=1.0
+    logs:
+      enabled: true
+      type: readiness
+      level: FINE
+      period-s: 60
+  metrics:
+    web-instrumentation:
+      - name: suggestions-endpoint
+        url-pattern: /v1/suggestions/*
+    servlet:
+      enabled: true
+      mapping: /metrics
   fault-tolerance:
     annotation-overrides:
       - class: si.fri.rso2021.Payments.api.v1.resources.SuggestionsResources
@@ -44,6 +54,8 @@ kumuluzee:
         auto-offset-reset: earliest
         session-timeout-ms: 30000
         sasl-jaas-config:
+          username: xb9xnuao
+          password: Xp09QfLtNN2nvExTgf1IxKKJoKJ5qiaE
 rest-properties:
   maintenance-mode: false
   broken: false
