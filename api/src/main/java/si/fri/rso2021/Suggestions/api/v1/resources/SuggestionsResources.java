@@ -48,8 +48,8 @@ public class SuggestionsResources {
     @Context
     protected UriInfo uriInfo;
 
-    @Inject
-    private EventProducerImplementation eventProducer;
+//    @Inject
+//    private EventProducerImplementation eventProducer;
 
     @Metered(name = "SuggestionsListRequest")
     private List<Customers> makeListRequest(String type, String urlparam) throws IOException {
@@ -90,7 +90,7 @@ public class SuggestionsResources {
 
     @Metered(name = "SuggestionsLocationRequest")
     private String [] makeLocationRequest(String type, String urlparam) throws IOException {
-        String dburl = "https://atlas.microsoft.com/search/address/json?&subscription-key=aE9xmxoCJYiA4iR68peVW3FYLVFfenEVz_2VxrO4JUE&api-version=1.0&language=en-US&query="+urlparam;
+        String dburl = "https://atlas.microsoft.com/search/address/json?&subscription-key=Aq5NNU-8Bhp2XOoXGtR4lX8sNGiXGKcrD4jnK2UqPDQ&api-version=1.0&language=en-US&query="+urlparam;
         log.info("STARTING SECOND" + type + "REQUEST " + dburl);
         URL url = new URL(dburl + urlparam);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -131,7 +131,7 @@ public class SuggestionsResources {
 
     @Metered(name = "SuggestionsWeatherRequest")
     private String makeWeatherRequest(String type, String [] urlparam) throws IOException {
-        String dburl = "https://atlas.microsoft.com/weather/indices/daily/json?api-version=1.0&query="+urlparam[0]+","+urlparam[1]+"&subscription-key=aE9xmxoCJYiA4iR68peVW3FYLVFfenEVz_2VxrO4JUE";
+        String dburl = "https://atlas.microsoft.com/weather/indices/daily/json?api-version=1.0&query="+urlparam[0]+","+urlparam[1]+"&subscription-key=Aq5NNU-8Bhp2XOoXGtR4lX8sNGiXGKcrD4jnK2UqPDQ";
         log.info("STARTING SECOND" + type + "REQUEST " + dburl);
         URL url = new URL(dburl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -166,7 +166,7 @@ public class SuggestionsResources {
         String [] coordinates = makeLocationRequest("GET", c);
         String weather = makeWeatherRequest("GET", coordinates);
 
-        eventProducer.produceMessage(String.valueOf(id), c);
+        //eventProducer.produceMessage(String.valueOf(id), c);
 
         if (c == "") {
             return Response.status(Response.Status.NOT_FOUND).build();
