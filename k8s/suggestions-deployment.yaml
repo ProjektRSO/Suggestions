@@ -13,7 +13,7 @@ spec:
         app: suggestions
     spec:
       containers:
-        - image: kolan51/rso2021-suggestions:2021-12-31-21-01-57
+        - image: kolan51/rso2021-suggestions:2022-01-03-20-55-39
           name: suggestions
           env:
             - name: REST-PROPERTIES_CUSTOMERSURL

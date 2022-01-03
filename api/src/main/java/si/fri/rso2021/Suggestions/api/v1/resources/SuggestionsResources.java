@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso2021.Suggestions.services.v1.config.RestProperties;
-import si.fri.rso2021.Suggestions.services.v1.streaming.EventProducerImplementation;
 import si.fri.rso2021.Suggestions.models.v1.objects.Customers;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 import javax.enterprise.context.ApplicationScoped;

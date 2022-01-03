@@ -35,17 +35,6 @@ kumuluzee:
         annotation: retry
         parameters:
           max-retries: 15
-  streaming:
-    kafka:
-      producer:
-        bootstrap-servers: glider-03.srvs.cloudkafka.com:9094
-        acks: all
-        retries: 0
-        batch-size: 16384
-        linger-ms: 1
-        buffer-memory: 33554432
-        key-serializer: org.apache.kafka.common.serialization.StringSerializer
-        value-serializer: org.apache.kafka.common.serialization.StringSerializer
 rest-properties:
   maintenance-mode: false
   broken: false
