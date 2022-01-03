@@ -2,7 +2,7 @@ name: build with Maven and package as Docker image
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, workingversion ]
   pull_request:
     branches: [ main ]
 
