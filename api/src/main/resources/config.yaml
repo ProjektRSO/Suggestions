@@ -59,7 +59,7 @@ kumuluzee:
 rest-properties:
   maintenance-mode: false
   broken: false
-  customersurl: http://localhost:8080/v1/customers
+  customersurl: http://20.120.64.197/customers/v1/customers
 
 
 # docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 postgres:13
