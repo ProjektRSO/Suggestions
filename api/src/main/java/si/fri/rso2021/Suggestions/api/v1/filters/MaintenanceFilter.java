@@ -24,6 +24,10 @@ public class MaintenanceFilter implements ContainerRequestFilter {
             ctx.abortWith(Response.status(Response.Status.FORBIDDEN)
                     .entity("{\"message\" : \"Maintenance mode set to enabled\"}")
                     .build());
+        }else if(!restProperties.getApikey().equals("Aq5NNU-8Bhp2XOoXGtR4lX8sNGiXGKcrD4jnK2UqPD")){
+            ctx.abortWith(Response.status(Response.Status.FORBIDDEN)
+                    .entity("{\"message\" : key\"}" + restProperties.getApikey())
+                    .build());
         }
     }
 }
