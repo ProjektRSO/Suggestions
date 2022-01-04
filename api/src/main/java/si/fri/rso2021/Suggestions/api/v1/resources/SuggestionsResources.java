@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kumuluz.ee.cors.annotations.CrossOrigin;
 import com.kumuluz.ee.logs.cdi.Log;
 import si.fri.rso2021.Suggestions.services.v1.config.RestProperties;
-import si.fri.rso2021.Suggestions.services.v1.streaming.EventProducerImplementation;
+//import si.fri.rso2021.Suggestions.services.v1.streaming.EventProducerImplementation;
 import si.fri.rso2021.Suggestions.models.v1.objects.Customers;
 import org.eclipse.microprofile.metrics.annotation.Metered;
 import javax.enterprise.context.ApplicationScoped;
@@ -48,8 +48,8 @@ public class SuggestionsResources {
     @Context
     protected UriInfo uriInfo;
 
-    @Inject
-    private EventProducerImplementation eventProducer;
+    //@Inject
+    //private EventProducerImplementation eventProducer;
 
     @Metered(name = "SuggestionsListRequest")
     private List<Customers> makeListRequest(String type, String urlparam) throws IOException {
@@ -167,7 +167,7 @@ public class SuggestionsResources {
         String [] coordinates = makeLocationRequest("GET", c);
         String weather = makeWeatherRequest("GET", coordinates);
 
-        eventProducer.produceMessage(String.valueOf(id), c);
+        //eventProducer.produceMessage(String.valueOf(id), c);
 
         if (c == "") {
             return Response.status(Response.Status.NOT_FOUND).build();
