@@ -35,10 +35,23 @@ kumuluzee:
         annotation: retry
         parameters:
           max-retries: 15
+  streaming:
+    kafka:
+      producer:
+        bootstrap-servers: glider-03.srvs.cloudkafka.com:9094
+        acks: all
+        retries: 0
+        batch-size: 16384
+        linger-ms: 1
+        buffer-memory: 33554432
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+        sasl-mechanism: PLAIN
 rest-properties:
   maintenance-mode: false
+  apikey: Aq5NNU-8Bhp2XOoXGtR4lX8sNGiXGKcrD4jnK2UqPD
   broken: false
-  customersurl: http://20.120.64.197/customers/v1/customers
+  customersurl: http://localhost:8080/v1/customers
 
 
 # docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 postgres:13
