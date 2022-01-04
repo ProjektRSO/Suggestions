@@ -15,6 +15,9 @@ public class RestProperties {
     @ConfigValue(watch = true)
     private String customersurl;
 
+    @ConfigValue(watch = true)
+    private String apikey;
+
     private Boolean broken;
 
     public Boolean getMaintenanceMode() {
@@ -36,4 +39,8 @@ public class RestProperties {
     public String getCustomersurl() { return customersurl; }
 
     public void setCustomersurl(String customersurl) { this.customersurl = customersurl;}
+
+    public String getApikey() {return apikey;}
+
+    public void setApikey(String apikey) {this.apikey = apikey;}
 }
