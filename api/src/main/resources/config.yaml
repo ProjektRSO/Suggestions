@@ -38,7 +38,7 @@ kumuluzee:
   streaming:
     kafka:
       producer:
-        bootstrap-servers: glider-03.srvs.cloudkafka.com:9094
+        bootstrap-servers: glider-02.srvs.cloudkafka.com:9094
         acks: all
         retries: 0
         batch-size: 16384
@@ -46,7 +46,14 @@ kumuluzee:
         buffer-memory: 33554432
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
-        sasl-mechanism: PLAIN
+        security-protocol: SASL_SSL
+        sasl-mechanism: SCRAM-SHA-256
+        group-id: newer
+        enable-auto-commit: true
+        auto-commit-interval-ms: 1000
+        auto-offset-reset: earliest
+        session-timeout-ms: 30000
+        sasl-jaas-config: org.apache.kafka.common.security.scram.ScramLoginModule required username=xb9xnuao password=Xp09QfLtNN2nvExTgf1IxKKJoKJ5qiaE;
 rest-properties:
   maintenance-mode: false
   apikey: Aq5NNU-8Bhp2XOoXGtR4lX8sNGiXGKcrD4jnK2UqPD
