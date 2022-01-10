@@ -31,7 +31,6 @@ import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
-import si.fri.rso2021.Suggestions.services.v1.streaming.EventProducerImplementation;
 
 @Log
 @ApplicationScoped
@@ -49,11 +48,6 @@ public class SuggestionsResources {
     @Context
     protected UriInfo uriInfo;
 
-    @Inject
-    private EventProducerImplementation eventProducer;
-
-    //@Inject
-    //private EventProducerImplementation eventProducer;
 
     @Metered(name = "SuggestionsListRequest")
     private List<Customers> makeListRequest(String type, String urlparam) throws IOException {
@@ -171,7 +165,6 @@ public class SuggestionsResources {
         String [] coordinates = makeLocationRequest("GET", c);
         String weather = makeWeatherRequest("GET", coordinates);
 
-        eventProducer.produceMessage(String.valueOf(id), c);
 
         if (c == "") {
             return Response.status(Response.Status.NOT_FOUND).build();
