@@ -31,4 +31,13 @@ public class DemoResource {
 
         return Response.status(Response.Status.OK).build();
     }
+
+    @POST
+    @Path("recover")
+    public Response makeHealthy() {
+
+        restProperties.setBroken(false);
+
+        return Response.status(Response.Status.OK).build();
+    }
 }
