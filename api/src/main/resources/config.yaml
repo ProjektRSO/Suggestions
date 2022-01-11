@@ -9,7 +9,7 @@ kumuluzee:
       port: 8081
   config:
     consul:
-      agent: http://localhost:8500
+      agent: http://52.150.43.117:8500
   health:
     metrics:
       web-instrumentation:
@@ -28,7 +28,8 @@ kumuluzee:
 rest-properties:
   maintenance-mode: false
   broken: false
-  customersurl: http://localhost:8080/v1/customers
+  customersurl: http://20.120.64.197/customers/v1/customers
+  apikey: Aq5NNU-8Bhp2XOoXGtR4lX8sNGiXGKcrD4jnK2UqPD
 
 
 # docker run -d --name rso-workerdb -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=workers -p 5432:5432 postgres:13
