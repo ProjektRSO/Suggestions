@@ -169,9 +169,4 @@ public class SuggestionsResources {
         return Response.status(Response.Status.OK).entity(weather).build();
     }
 
-    @GET
-    public Response getCustomerLocationByID() throws IOException {
-        return Response.status(Response.Status.OK).entity("YOU NEED CUSTOMER ID").build();
-    }
-
 }

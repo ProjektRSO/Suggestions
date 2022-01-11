@@ -11,6 +11,11 @@ kumuluzee:
     consul:
       agent: http://52.150.43.117:8500
   health:
+    checks:
+      http-health-check:
+        connection-url: https://azure.microsoft.com/en-us/services/azure-maps/
+      disk-space-health-check:
+        threshold: 100000000
     metrics:
       web-instrumentation:
         - name: suggestions-endpoint
